@@ -46,12 +46,12 @@ export class ImageGalleryHub extends Component {
             `Sorry, there are no images matching your search query for '${query}'. Please try again.`
           );
         }
-        this.setState(prevState => ({
+        this.setState({
           status: Status.RESOLVED,
           gallery: [...hits],
           total: hits.length,
           totalHits: totalHits,
-        }));
+        });
         return toast.success(`Hooray! We found ${totalHits} images.`);
       } catch (error) {
         this.setState({ error: true, status: Status.REJECTED });
