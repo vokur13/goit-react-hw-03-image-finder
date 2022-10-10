@@ -6,8 +6,15 @@ import { Searchbar } from 'components/Searchbar';
 import { ImageGalleryHub } from 'components/ImageGalleryHub';
 
 export class App extends Component {
+  static defaultProps = {
+    initialValue: 1,
+  };
   state = {
+    page: this.props.initialValue,
     query: '',
+    gallery: [],
+    total: null,
+    totalHits: null,
   };
 
   handleFormSubmit = ({ query }) => {
@@ -15,15 +22,27 @@ export class App extends Component {
     if (q === '') {
       return toast.warn('Please let us know your query item');
     }
-    this.setState({ query: q });
+    this.setState({
+      page: this.props.initialValue,
+      query: q,
+      gallery: [],
+      total: null,
+      totalHits: null,
+    });
   };
 
   render() {
-    const { query } = this.state;
+    const { page, query, gallery, total, totalHits } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGalleryHub query={query} />
+        <ImageGalleryHub
+          page={page}
+          query={query}
+          gallery={gallery}
+          total={total}
+          totalHits={totalHits}
+        />
         <ToastContainer position="top-left" autoClose={5000} />
       </>
     );

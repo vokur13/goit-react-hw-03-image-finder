@@ -15,7 +15,7 @@ export const ImageGalleryPending = ({ query }) => {
         m={0}
         position="absolute"
         top="50%"
-        left="45%"
+        left="46%"
         // transform="translate(-50%, -50%)"
       >
         <Loader />

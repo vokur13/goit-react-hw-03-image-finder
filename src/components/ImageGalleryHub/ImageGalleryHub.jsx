@@ -18,57 +18,52 @@ const Status = {
 export class ImageGalleryHub extends Component {
   static defaultProps = {
     step: 1,
-    initialValue: 1,
   };
 
   state = {
-    gallery: [],
-    page: this.props.initialValue,
+    page: this.props.page,
+    gallery: this.props.gallery,
+    query: this.props.query,
+    total: this.props.total,
+    totalHits: this.props.totalHits,
     error: false,
     status: Status.IDLE,
-    total: null,
-    totalHits: null,
   };
 
   async componentDidUpdate(prevProps, prevState) {
     const { query } = this.props;
     const { page } = this.state;
+
     if (prevProps.query !== query) {
       try {
         this.setState({
           status: Status.PENDING,
-          page: this.props.initialValue,
-          gallery: [],
-          total: null,
-          totalHits: null,
         });
-        const data = await API.getGallery(query, page);
-        const { totalHits, hits } = await data;
+        const { totalHits, hits } = await API.getGallery(query, page);
         if (hits.length === 0) {
           this.setState({ status: Status.REJECTED });
           return toast.error(
             `Sorry, there are no images matching your search query for '${query}'. Please try again.`
           );
         }
-        toast.success(`Hooray! We found ${totalHits} images.`);
-        this.setState({
+        this.setState(prevState => ({
           status: Status.RESOLVED,
           gallery: [...hits],
           total: hits.length,
           totalHits: totalHits,
-        });
+        }));
+        return toast.success(`Hooray! We found ${totalHits} images.`);
       } catch (error) {
         this.setState({ error: true, status: Status.REJECTED });
         console.log(error);
       }
     }
-    if (prevState.page !== page) {
+    if (prevState.page !== this.state.page) {
       try {
         this.setState({
           status: Status.PENDING,
         });
         const { hits } = await API.getGallery(query, page);
-
         this.setState(prevState => ({
           status: Status.RESOLVED,
           gallery: [...prevState.gallery, ...hits],
@@ -96,19 +91,15 @@ export class ImageGalleryHub extends Component {
   render() {
     const { query } = this.props;
     const { gallery, error, status, total, totalHits } = this.state;
-
     if (status === 'idle') {
       return <div>Please let us know your query item</div>;
     }
-
     if (status === 'pending') {
       return <ImageGalleryPending query={query} data={gallery} />;
     }
-
     if (status === 'rejected') {
       return <ImageGalleryError message={error.message} />;
     }
-
     if (status === 'resolved') {
       return (
         <>
@@ -132,11 +123,15 @@ export class ImageGalleryHub extends Component {
 }
 
 ImageGalleryHub.propTypes = {
+  page: PropTypes.number.isRequired,
   query: PropTypes.string,
+  gallery: PropTypes.array,
+  total: PropTypes.number,
+  totalHits: PropTypes.number,
 };
 
-{
-  /* <p>Whoops, something went wrong, no item upon query {query} found</p> */
-}
+// {
+//   /* <p>Whoops, something went wrong, no item upon query {query} found</p> */
+// }
 
-// error.response.data
+// // error.response.data
