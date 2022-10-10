@@ -69,11 +69,6 @@ export class ImageGalleryHub extends Component {
           gallery: [...prevState.gallery, ...hits],
           total: prevState.total + hits.length,
         }));
-        // if (total === totalHits) {
-        //   return toast.warn(
-        //     "We're sorry, but you've reached the end of search results."
-        //   );
-        // }
       } catch (error) {
         this.setState({ error: true, status: Status.REJECTED });
         console.log(error);
@@ -91,6 +86,7 @@ export class ImageGalleryHub extends Component {
   render() {
     const { query } = this.props;
     const { gallery, error, status, total, totalHits } = this.state;
+
     if (status === 'idle') {
       return <div>Please let us know your query item</div>;
     }
