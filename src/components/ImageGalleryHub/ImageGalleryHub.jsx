@@ -56,6 +56,7 @@ export class ImageGalleryHub extends Component {
       } catch (error) {
         this.setState({ error: true, status: Status.REJECTED });
         console.log(error);
+        toast.error(`Sorry, something goes wrong: ${error.message}`);
       }
     }
     if (prevState.page !== this.state.page) {
