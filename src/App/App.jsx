@@ -10,7 +10,7 @@ export class App extends Component {
     initialValue: 1,
   };
   state = {
-    page: this.props.initialValue,
+    page: 1,
     query: '',
     gallery: [],
     total: null,
@@ -23,7 +23,7 @@ export class App extends Component {
       return toast.warn('Please let us know your query item');
     }
     this.setState({
-      page: this.props.initialValue,
+      page: 1,
       query: q,
       gallery: [],
       total: null,

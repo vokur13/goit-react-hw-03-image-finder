@@ -21,7 +21,7 @@ export class ImageGalleryHub extends Component {
   };
 
   state = {
-    page: this.props.page,
+    page: 1,
     gallery: this.props.gallery,
     query: this.props.query,
     total: this.props.total,
