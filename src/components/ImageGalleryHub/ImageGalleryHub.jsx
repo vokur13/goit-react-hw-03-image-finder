@@ -101,18 +101,17 @@ export class ImageGalleryHub extends Component {
       return (
         <>
           <ImageGallery data={gallery} />
-          {total < totalHits ? (
+          {total < totalHits && (
             <Box display="flex" justifyContent="center">
               <Button type="button" onClick={this.handleMoreImage}>
                 Load more
               </Button>
             </Box>
-          ) : null}
-          {total === totalHits
-            ? toast.warn(
-                "We're sorry, but you've reached the end of search results."
-              )
-            : null}
+          )}
+          {total === totalHits &&
+            toast.warn(
+              "We're sorry, but you've reached the end of search results."
+            )}
         </>
       );
     }
