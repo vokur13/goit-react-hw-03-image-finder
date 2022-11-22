@@ -6,9 +6,11 @@ import { Box } from 'components/Box';
 
 export const ImageGallery = ({ data, ...otherProps }) => {
   const dummy = useRef(null);
+
   useEffect(() => {
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   }, [data]);
+
   return (
     <Box display="grid" gridTemplateColumns="1fr" gridGap={4} pb={5}>
       <ImageGalleryList>
