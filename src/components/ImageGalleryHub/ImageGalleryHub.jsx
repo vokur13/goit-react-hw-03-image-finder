@@ -100,7 +100,7 @@ export class ImageGalleryHub extends Component {
     if (status === 'resolved') {
       return (
         <>
-          <ImageGallery data={gallery} />;
+          <ImageGallery data={gallery} />
           {total < totalHits ? (
             <Box display="flex" justifyContent="center">
               <Button type="button" onClick={this.handleMoreImage}>
