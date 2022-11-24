@@ -37,6 +37,7 @@ export class ImageGalleryHub extends Component {
     if (prevProps.query !== query) {
       try {
         this.setState({
+          page: 1,
           status: Status.PENDING,
         });
         const { totalHits, hits } = await API.getGallery(query, page);
