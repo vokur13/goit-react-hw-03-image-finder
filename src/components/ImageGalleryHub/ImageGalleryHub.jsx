@@ -21,7 +21,7 @@ export class ImageGalleryHub extends Component {
   };
 
   state = {
-    page: 1,
+    page: this.props.page,
     gallery: this.props.gallery,
     query: this.props.query,
     total: this.props.total,
@@ -34,10 +34,12 @@ export class ImageGalleryHub extends Component {
     const { query } = this.props;
     const { page } = this.state;
 
-    if (prevProps.query !== query) {
+    if (prevState.query !== query) {
       try {
         this.setState({
-          page: 1,
+          query: this.props.query,
+          page: this.props.page,
+          total: this.props.total,
           status: Status.PENDING,
         });
         const { totalHits, hits } = await API.getGallery(query, page);
@@ -126,9 +128,3 @@ ImageGalleryHub.propTypes = {
   total: PropTypes.number,
   totalHits: PropTypes.number,
 };
-
-// {
-//   /* <p>Whoops, something went wrong, no item upon query {query} found</p> */
-// }
-
-// // error.response.data
