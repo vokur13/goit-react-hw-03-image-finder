@@ -31,15 +31,29 @@ export class ImageGalleryHub extends Component {
   };
 
   async componentDidUpdate(prevProps, prevState) {
-    const { query } = this.props;
+    // console.log('prevProps.page', prevProps.page);
+    // console.log('this.props.page', this.props.page);
+    // console.log('prevProps.query', prevProps.query);
+    // console.log('this.props.query', this.props.query);
+    this.setState({ query: this.props.query });
+    const { query } = this.state;
     const { page } = this.state;
 
-    if (prevState.query !== query) {
+    // if (prevState.query !== query) {
+
+    // }
+    if (prevState.query !== query || prevState.page !== page) {
+      // console.log('prevProps.query', prevProps.query);
+      // console.log('this.props.query', this.props.query);
+      // console.log('prevState.page', prevState.page);
+      // console.log('this.state.page', this.state.page);
+      console.log('Fetch Data');
       try {
         this.setState({
-          query: this.props.query,
-          page: this.props.page,
-          total: this.props.total,
+          // query: this.props.query,
+          gallery: this.props.gallery,
+          // total: null,
+          // page: this.props.page,
           status: Status.PENDING,
         });
         const { totalHits, hits } = await API.getGallery(query, page);
@@ -49,12 +63,18 @@ export class ImageGalleryHub extends Component {
             `Sorry, there are no images matching your search query for '${query}'. Please try again.`
           );
         }
-        this.setState({
+        // this.setState({
+        //   status: Status.RESOLVED,
+        //   gallery: [...hits],
+        //   total: hits.length,
+        //   totalHits: totalHits,
+        // });
+        this.setState(prevState => ({
           status: Status.RESOLVED,
-          gallery: [...hits],
-          total: hits.length,
+          gallery: [...prevState.gallery, ...hits],
+          total: prevState.total + hits.length,
           totalHits: totalHits,
-        });
+        }));
         return toast.success(`Hooray! We found ${totalHits} images.`);
       } catch (error) {
         this.setState({ error: true, status: Status.REJECTED });
@@ -80,7 +100,7 @@ export class ImageGalleryHub extends Component {
     // }
   }
 
-  handleMoreImage = () => {
+  handleMoreImage = async () => {
     const { step } = this.props;
     this.setState(prevState => ({
       page: prevState.page + step,
@@ -88,7 +108,7 @@ export class ImageGalleryHub extends Component {
   };
 
   render() {
-    const { query } = this.props;
+    const { query } = this.state;
     const { gallery, error, status, total, totalHits } = this.state;
 
     if (status === 'idle') {
@@ -104,13 +124,13 @@ export class ImageGalleryHub extends Component {
       return (
         <>
           <ImageGallery data={gallery} />
-          {total < totalHits && (
+          {total < totalHits ? (
             <Box display="flex" justifyContent="center">
               <Button type="button" onClick={this.handleMoreImage}>
                 Load more
               </Button>
             </Box>
-          )}
+          ) : null}
           {total === totalHits &&
             toast.warn(
               "We're sorry, but you've reached the end of search results."
