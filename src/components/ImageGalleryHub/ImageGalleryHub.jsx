@@ -62,22 +62,22 @@ export class ImageGalleryHub extends Component {
         toast.error(`Sorry, something goes wrong: ${error.message}`);
       }
     }
-    if (prevState.page !== this.state.page) {
-      try {
-        this.setState({
-          status: Status.PENDING,
-        });
-        const { hits } = await API.getGallery(query, page);
-        this.setState(prevState => ({
-          status: Status.RESOLVED,
-          gallery: [...prevState.gallery, ...hits],
-          total: prevState.total + hits.length,
-        }));
-      } catch (error) {
-        this.setState({ error: true, status: Status.REJECTED });
-        console.log(error);
-      }
-    }
+    // if (prevState.page !== this.state.page) {
+    //   try {
+    //     this.setState({
+    //       status: Status.PENDING,
+    //     });
+    //     const { hits } = await API.getGallery(query, page);
+    //     this.setState(prevState => ({
+    //       status: Status.RESOLVED,
+    //       gallery: [...prevState.gallery, ...hits],
+    //       total: prevState.total + hits.length,
+    //     }));
+    //   } catch (error) {
+    //     this.setState({ error: true, status: Status.REJECTED });
+    //     console.log(error);
+    //   }
+    // }
   }
 
   handleMoreImage = () => {
