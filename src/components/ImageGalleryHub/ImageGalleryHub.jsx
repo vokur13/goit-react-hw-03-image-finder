@@ -35,14 +35,12 @@ export class ImageGalleryHub extends Component {
     // console.log('this.props.page', this.props.page);
     // console.log('prevProps.query', prevProps.query);
     // console.log('this.props.query', this.props.query);
-    this.setState({ query: this.props.query });
-    const { query } = this.state;
+    // console.log('prevState.gallery', prevState.gallery);
+    // console.log('this.state.gallery', this.state.gallery);
+    const { query } = this.props;
     const { page } = this.state;
 
-    // if (prevState.query !== query) {
-
-    // }
-    if (prevState.query !== query || prevState.page !== page) {
+    if (prevProps.query !== query || prevState.page !== page) {
       // console.log('prevProps.query', prevProps.query);
       // console.log('this.props.query', this.props.query);
       // console.log('prevState.page', prevState.page);
@@ -51,8 +49,8 @@ export class ImageGalleryHub extends Component {
       try {
         this.setState({
           // query: this.props.query,
-          gallery: this.props.gallery,
-          // total: null,
+          // gallery: this.props.gallery,
+          // total: this.props.total,
           // page: this.props.page,
           status: Status.PENDING,
         });
@@ -82,7 +80,7 @@ export class ImageGalleryHub extends Component {
         toast.error(`Sorry, something goes wrong: ${error.message}`);
       }
     }
-    // if (prevState.page !== this.state.page) {
+    // if (prevState.page !== page) {
     //   try {
     //     this.setState({
     //       status: Status.PENDING,
@@ -100,7 +98,7 @@ export class ImageGalleryHub extends Component {
     // }
   }
 
-  handleMoreImage = async () => {
+  handleMoreImage = () => {
     const { step } = this.props;
     this.setState(prevState => ({
       page: prevState.page + step,
